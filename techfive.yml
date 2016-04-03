@@ -1,0 +1,10 @@
+author: lorcanoeire
+audience: "DevOps"
+topic: devops
+slides:
+  slideone:
+    name: "Slide One"
+    content: "hello Team ! Aren’t you just bored with all those slides-based presentations?"
+  slidetwo:
+    name: "Slide Two"
+    content: "Well now... Given <strong>in modern browsers</strong> shouldn’t <strong>copy the limits</strong> of ‘classic’ slide decks?"
