@@ -2,9 +2,18 @@ author: lorcanoeire
 audience: "DevOps"
 topic: devops
 slides:
-  slideone:
-    name: "Slide One"
-    content: "hello Team ! Aren’t you just bored with all those slides-based presentations?"
-  slidetwo:
-    name: "Slide Two"
-    content: "Well now... Given <strong>in modern browsers</strong> shouldn’t <strong>copy the limits</strong> of ‘classic’ slide decks?"
+  -
+    name: "Introduction"
+    content: "Do you think using powerpoint pressos for tech demos suck?!"
+  -
+    name: "What?"
+    content: "Today I'm going to show you a quick and easy altervative method to creating and versioning your tech sharing sessions"
+  -
+    name: "How?"
+    content: "The alternative is made of some nice open source projects - Impress.js + Asciinema + GoLang + YAMl"
+  -
+    name: "Demo"
+    content: "Tricks and some..."
+  -
+    name: "Asciinema"
+    content: "Live Demo (or not!)"

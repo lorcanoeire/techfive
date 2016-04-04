@@ -7,58 +7,71 @@ import (
     "os"
 )
 
-type Slide struct {
+const techfive_template string = "techfive-template.html"
+const presentation string      = "presentation.html"
+const config string            = "techfive"
+
+type Presentation struct {
   Author string
   Audience string
   Topic  string
+}
+
+type Slide struct {
   Name string
   Content string
 }
 
-func slide_data(slide string) Slide {
+func slideData(slides []interface{}, index int) Slide {
 
-  slide_name_id := fmt.Sprintf("slides.%v.name", slide)
-  slide_content_id := fmt.Sprintf("slides.%v.content", slide)
+  fmt.Printf("\nPreparing slide %v content...", index);
+  slide := slides[index].(map[interface {}]interface{})
+  name := fmt.Sprintf("%v", slide["name"])
+  content := fmt.Sprintf("%v", slide["content"])
+
   slide_data := Slide {
-    Author: viper.GetString("author"),
-    Audience: viper.GetString("audience"),
-    Topic: viper.GetString("topic"),
-    Name: viper.GetString(slide_name_id),
-    Content: viper.GetString(slide_content_id),
+    Name: name,
+    Content: content,
   }
 	return slide_data
 }
 
+func readPresentationConfig() {
+
+  fmt.Printf("Reading user defined presentation configuration file %v.yml ...", config);
+  viper.SetConfigName(config)
+  viper.SetConfigType("yaml")
+  viper.AddConfigPath(".")
+
+  err := viper.ReadInConfig()
+  if err != nil {
+    fmt.Println("No configuration file loaded")
+  }
+}
+
 func main() {
 
-  // Setup configuration
-  viper.SetConfigName("techfive")
-  viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
-	err := viper.ReadInConfig()
-	if err != nil {
-		fmt.Println("No configuration file loaded - using defaults")
-	}
-
-  // Specify example slide
-  var slide_id string = "slidetwo"
-  slide_data := slide_data(slide_id)
+  readPresentationConfig()
+  slides := viper.Get("slides").([]interface{})
+  slide_data := slideData(slides, 0)
 
   // Parse template
-  t, err := template.ParseFiles("techfive-template.html")
+  t, err := template.ParseFiles(fmt.Sprintf("templates/%v", techfive_template))
   if err != nil {
     fmt.Println(err);
   }
 
-  // Create and open presentation
-  presentation, err := os.Create("presentation.html")
+  // Create and open presentation file
+  presentation_file, err := os.Create(fmt.Sprintf("presentations/%v", presentation))
   if err != nil {
     fmt.Println("create file: ", err)
     return
   }
 
   // Write presentation using user based slide data
-  err = t.Execute(presentation, slide_data)
+  fmt.Printf("\nGenerating presentation\nWriting to file %v ...", presentation);
+  fmt.Println("");
+  err = t.Execute(presentation_file, slide_data)
   if err != nil {
     fmt.Print("execute: ", err)
     return
